@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Local Storage exemple avec Lawnchair</title>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+    <script src="http://westcoastlogic.com/lawnchair/downloads/lawnchair-0.6.1.js"></script>
+	<script>
+    
+    $(function() {
+	localStorage.clear(); //be careful as this will clear the entire database for that user
+    <!-- API de base -->
+if (typeof(localStorage) == 'undefined' ) {
+	alert('Your browser does not support HTML5 localStorage. Try upgrading.');
+} else {
+	try {
+		localStorage.setItem("name", "Hello World! (API HTML5)"); //saves to the database, "key", "value"
+	} catch (e) {
+	 	 if (e == QUOTA_EXCEEDED_ERR) {
+	 	 	 alert('Quota exceeded!'); //data wasn't successfully saved due to quota exceed so throw an error
+		}
+	}
+	console.log(localStorage.getItem("name"));
+	localStorage.removeItem("name"); //deletes the matching item from the database
+}
+
+var newDate = new Date();
+var itemId = newDate.getTime(); //creates a unique id with the milliseconds since January 1, 1970
+var values = new Array();
+var name = "Some Map";
+
+var date = newDate.getDate() + "/" + newDate.getMonth()+1 + "/" + newDate.getFullYear();
+
+values.push(name); //push each value into our values array
+values.push(hours);
+values.push(date);
+
+try {
+	localStorage.setItem(itemId, values.join(";")); //store the item in the database
+} catch (e) {
+	if (e == QUOTA_EXCEEDED_ERR) {
+		alert("Quota exceeded!");
+	}
+}
+
+var itemKey = localStorage.key(0);
+var values = localStorage.getItem(itemKey); //values currently look like 'Some Project;12;5/7/2010'
+values = values.split(";");
+var map = values[0];
+var hours = values[1];
+var date = values[2];
+
+console.log('Map Name: ' + map + '<br />');
+console.log('Hours Logged: ' + hours + 'hours<br />');
+console.log('Date Logged: ' + date);
+
+document.write('<b>API de base</b><br />');
+document.write('TimeStamp' + itemId + '<br />');
+document.write('Map Name: ' + map + '<br />');
+document.write('Hours Logged: ' + hours + 'hours<br />');
+document.write('Date Logged: ' + date + '<br /><br />');
+//console.log('removeItem: ' + itemId);
+//localStorage.removeItem(itemId); //id (or key) of the value you want to delete
+//console.log('clear ALL data')
+//localStorage.clear(); //be careful as this will clear the entire database for that user
+
+
+
+<!-- FIN API de base -->
+
+
+    <!-- Lawnchair-->    
+	var store = new Lawnchair({adaptor:'dom', table:'people'},function(){
+
+    console.log('storage open');
+	console.log('Create an object geoportailPermalien');
+	
+	var newDate = new Date();
+	var itemId = newDate.getTime(); 
+
+    var permalink = {key:'http://www.geoportail.fr/?c=7.3583,48.24166&l=Scan%28100%29&z=7'};
+
+	console.log('save permalien');
+    this.save(permalink, function(){
+	    this.all('console.log(records.length)');
+	});
+	
+	console.log('return ALL localStorage Objects');
+	this.all(function(r){ 
+		console.log(r) 
+	});
+
+	console.log('return EACH localStorage Objects');
+	this.each(function(record, index) {
+            console.log(record);
+        })
+    
+
+	console.log('get specific object');
+    this.get('carte/lyon', function(permalink) {
+        console.log(permalink);
+    });
+    
+	//console.log('simple removal object');
+	//this.remove('carte/lyon', function() {
+    //	console.log('remove ok');
+	//});
+
+	console.log('get specific object');
+    this.get('carte/lyon', function(permalink) {
+        console.log(permalink);
+    });
+
+	
+	//console.log('destroy ALL');
+    //this.nuke();
+	document.write('<b>Framework Lawnchair</b><br />');
+    
+	console.log('get specific object');
+    this.get('carte/lyon', function(permalink) {
+        console.log(permalink);
+		document.write('permalink : ' + permalink.key + '<br />');
+    });
+    
+	
+	
+	<!-- FIN Lanwnchair-->
+});
+});
+</script>
+</head>
+<body>
+</body>
+</html>
