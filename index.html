@@ -31,7 +31,7 @@
                 var date = newDate.getDate() + "/" + newDate.getMonth()+1 + "/" + newDate.getFullYear();
                 
                 values.push(name); //push each value into our values array
-                values.push(hours);
+                values.push(newDate.getHours());
                 values.push(date);
                 
                 try {
@@ -42,15 +42,14 @@
                     }
                 }
                 
-                var itemKey = localStorage.key(0);
-                var values = localStorage.getItem(itemKey); //values currently look like 'Some Project;12;5/7/2010'
+                var values = localStorage.getItem(itemId); //values currently look like 'Some Project;12;5/7/2010'
                 values = values.split(";");
                 var map = values[0];
                 var hours = values[1];
                 var date = values[2];
                 
                 console.log('Map Name: ' + map + '<br />');
-                console.log('Hours Logged: ' + hours + 'hours<br />');
+                console.log('Hours Logged: ' + hours + ' hours<br />');
                 console.log('Date Logged: ' + date);
                 
                 $('body').append('<b>API de base</b><br />');
@@ -113,9 +112,6 @@
                 });
                 
                 	
-                //console.log('destroy ALL'); //uncomment to destroy ALL localStorage
-                //this.nuke();
-                
                 $('body').append('<b>Framework Lawnchair</b><br />');
                     
                 console.log('get specific object');
@@ -136,10 +132,35 @@
                 
                 
                 <!-- FIN Lanwnchair-->
+                
+                
+                document.getElementById('btnLawnchair').addEventListener('click', function(){
+                    console.log('destroy ALL (Lawnchair)'); 
+                    maps.all(function(r){ 
+                        console.log('number of records before : ' +r.length);
+                    });
+                    maps.nuke();     
+                    maps.all(function(r){ 
+                        console.log('number of records after : ' +r.length);
+                    });
+                });
+                
+                
+                document.getElementById('btnLocalStorage').addEventListener('click', function(){
+                    console.log('destroy ALL (localStorage API)'); 
+                    maps.all(function(r){ 
+                        console.log('number of records before : ' +r.length);
+                    });
+                    localStorage.clear();
+                    maps.all(function(r){ 
+                        console.log('number of records after : ' +r.length) 
+                    });
+                });
             });
         </script>
     </head>
     <body>
-        <p><input type="button" value="Destroy localStorage"></p>
+        <p><input id='btnLocalStorage' type="button" value="Destroy localStorage"></p>
+        <p><input id='btnLawnchair' type="button" value="Destroy with Lawnchair"></p>
     </body>
 </html>
