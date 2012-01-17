@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Local Storage exemple avec Lawnchair</title>
+<head>
+<title>Local Storage exemple avec Lawnchair</title>
 
-        <script src="jquery.min.js"></script>
-        <script src="lawnchair-0.6.1.min.js"></script>
-        <script>
+<script src="jquery.min.js"></script>
+<script src="lawnchair-0.6.1.min.js"></script>
+<script>
     
             $(function() {
                 <!-- API  HTML5-->
@@ -173,20 +173,33 @@
                 });
             });
         </script>
-    </head>
-    <body>
-	
-	<h3>Test avec l'API localStorage et avec Lawnchair car à la main c’est vite un peu verbeux… <br/><br/>
-	Lawnchair  permet de basculer sur une implémentation
-ou l’autre (WebStorage (Web Storage === DOM Storage === Local Storage) / IndexedDB / WebSql Database)sans avoir à trop se préoccuper de ce qui est dispo (sauf soucis de taille)</h3>
-<h4>Voir code source + console pour plus d'infos</h4>
+</head>
+<body>
+
+	<h3>
+		Test avec l'API localStorage et avec Lawnchair car à la main c’est
+		vite un peu verbeux… <br />
+		<br /> Lawnchair permet de basculer sur une implémentation ou l’autre
+		(WebStorage (Web Storage === DOM Storage === Local Storage) /
+		IndexedDB / WebSql Database)sans avoir à trop se préoccuper de ce qui
+		est dispo (sauf soucis de taille)
+	</h3>
+	<h4>Voir code source + console pour plus d'infos</h4>
 
 
-        <p><input id='text' type="text"><input id='submit' type="button" value="Enregistrer"></p>
-		<div class="valeur">Ancienne valeur :  </div>
-		
-		
-        <p><input id='btnLocalStorage' type="button" value="Destroy localStorage with API HTML5"></p>
-        <p><input id='btnLawnchair' type="button" value="Destroy with Lawnchair"></p>
-    </body>
+	<p>
+		<input id='text' type="text"><input id='submit' type="button"
+			value="Enregistrer">
+	</p>
+	<div class="valeur">Ancienne valeur :</div>
+
+
+	<p>
+		<input id='btnLocalStorage' type="button"
+			value="Destroy localStorage with API HTML5">
+	</p>
+	<p>
+		<input id='btnLawnchair' type="button" value="Destroy with Lawnchair">
+	</p>
+</body>
 </html>
