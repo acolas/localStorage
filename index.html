@@ -8,12 +8,14 @@
         <script>
     
             $(function() {
-                <!-- API de base -->
+                <!-- API  HTML5-->
+    			
+				//simple test with 
                 if (typeof(localStorage) == 'undefined' ) {
                     alert('Your browser does not support HTML5 localStorage. Try upgrading.');
                 } else {
                     try {
-                        localStorage.setItem("name", "Hello World! (API HTML5)"); //saves to the database, "key", "value"
+                        localStorage.setItem("name", "Your browser does support HTML5 localStorage"); //saves to the database, "key", "value"
                     } catch (e) {
                         if (e == QUOTA_EXCEEDED_ERR) {
                             alert('Quota exceeded!'); //data wasn't successfully saved due to quota exceed so throw an error
@@ -23,34 +25,32 @@
                     localStorage.removeItem("name"); //deletes the matching item from the database
                 }
                 
+				//test key timestamp/value
                 var newDate = new Date();
-                var itemId = newDate.getTime(); //creates a unique id with the milliseconds since January 1, 1970
+                var itemId = newDate.getTime();
                 var values = new Array();
                 var name = "Some Map";
                 
                 var date = newDate.getDate() + "/" + newDate.getMonth()+1 + "/" + newDate.getFullYear();
                 
-                values.push(name); //push each value into our values array
+                values.push(name);
                 values.push(newDate.getHours());
                 values.push(date);
                 
                 try {
-                    localStorage.setItem(itemId, values.join(";")); //store the item in the database
+                    localStorage.setItem(itemId, values.join(";")); 
                 } catch (e) {
                     if (e == QUOTA_EXCEEDED_ERR) {
                         alert("Quota exceeded!");
                     }
                 }
                 
-                var values = localStorage.getItem(itemId); //values currently look like 'Some Project;12;5/7/2010'
+				//getItem with timeStamp key
+                var values = localStorage.getItem(itemId); 
                 values = values.split(";");
                 var map = values[0];
                 var hours = values[1];
                 var date = values[2];
-                
-                console.log('Map Name: ' + map + '<br />');
-                console.log('Hours Logged: ' + hours + ' hours<br />');
-                console.log('Date Logged: ' + date);
                 
                 $('body').append('<b>API de base</b><br />');
                 $('body').append('TimeStamp' + itemId + '<br />');
@@ -68,14 +68,14 @@
                 <!-- FIN API de base -->
 
 
-                <!-- Lawnchair-->    
+                <!-- Lawnchair-->
                 var maps = Lawnchair({adaptor:'dom', name : 'maps'},function(){ //save into the dom, also available sql-lite, indexed-db...
                     console.log('storage open');
                 });
                 
                 
                 var newDate = new Date();
-                var itemId = newDate.getTime(); 
+                var itemId = newDate.getTime();
 
                 var map1 = {name:"Map 1",url:"www.geoportail.fr/carte/1",location:"Paris, FR"
                     ,style:"SCAN",quantity:1,date:"12/11/2011"};
@@ -86,8 +86,8 @@
                 maps.save({key:itemId,value:map2});
           
                 console.log('return ALL localStorage Objects');
-                maps.all(function(r){ 
-                    console.log(r) 
+                maps.all(function(r){
+                    console.log(r)
                 });
                 
                 console.log('return EACH localStorage Objects');
@@ -111,7 +111,7 @@
                     console.log(obj);
                 });
                 
-                	
+                
                 $('body').append('<b>Framework Lawnchair</b><br />');
                     
                 console.log('get specific object');
@@ -125,42 +125,48 @@
                 maps.get(itemId, function(permalink) {
                     console.log(permalink);
                     $('body').append('itemId ' + itemId+'<br />');
-                    $.each(permalink.value, function(key, value) { 
+                    $.each(permalink.value, function(key, value) {
                         $('body').append('key ' + key + ', value : ' + value +'<br />');
                     });
                 });
-                
-                
                 <!-- FIN Lanwnchair-->
-                
-                
+                				   
                 document.getElementById('btnLawnchair').addEventListener('click', function(){
-                    console.log('destroy ALL (Lawnchair)'); 
-                    maps.all(function(r){ 
+                    console.log('destroy ALL (Lawnchair)');
+                    maps.all(function(r){
+					$('body').append('<br />number of records before : ' +r.length+'<br />');
                         console.log('number of records before : ' +r.length);
                     });
-                    maps.nuke();     
-                    maps.all(function(r){ 
+                    maps.nuke();
+                    maps.all(function(r){
+					$('body').append('number of records after : ' +r.length+'<br />');
                         console.log('number of records after : ' +r.length);
                     });
                 });
                 
                 
                 document.getElementById('btnLocalStorage').addEventListener('click', function(){
-                    console.log('destroy ALL (localStorage API)'); 
-                    maps.all(function(r){ 
+                    console.log('destroy ALL (localStorage API)');
+                    maps.all(function(r){
+						$('body').append('<br />number of records before : ' +r.length+'<br />');
                         console.log('number of records before : ' +r.length);
                     });
                     localStorage.clear();
-                    maps.all(function(r){ 
-                        console.log('number of records after : ' +r.length) 
+                    maps.all(function(r){	
+						$('body').append('number of records after : ' +r.length+'<br />');
+                        console.log('number of records after : ' +r.length)
                     });
                 });
             });
         </script>
     </head>
     <body>
-        <p><input id='btnLocalStorage' type="button" value="Destroy localStorage"></p>
+	
+	<h3>Test avec l'API localStorage et avec Lawnchair car à la main c’est vite un peu verbeux… <br/><br/>
+	Lawnchair  permet de basculer sur une implémentation
+ou l’autre (WebStorage (Web Storage === DOM Storage === Local Storage) / IndexedDB / WebSql Database)sans avoir à trop se préoccuper de ce qui est dispo (sauf soucis de taille)</h3>
+
+        <p><input id='btnLocalStorage' type="button" value="Destroy localStorage with API HTML5"></p>
         <p><input id='btnLawnchair' type="button" value="Destroy with Lawnchair"></p>
     </body>
 </html>
