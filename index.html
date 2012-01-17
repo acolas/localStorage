@@ -4,13 +4,13 @@
         <title>Local Storage exemple avec Lawnchair</title>
 
         <script src="jquery.min.js"></script>
-        <script src="lawnchair-0.6.1.js"></script>
+        <script src="lawnchair-0.6.1.min.js"></script>
         <script>
     
             $(function() {
                 <!-- API  HTML5-->
-    			
-		//simple test with HTML5
+				
+				//simple test with  HTML5
                 if (typeof(localStorage) == 'undefined' ) {
                     alert('Your browser does not support HTML5 localStorage. Try upgrading.');
                 } else {
@@ -52,7 +52,7 @@
                 var hours = values[1];
                 var date = values[2];
                 
-                $('body').append('<b>API de base</b><br />');
+                $('body').append('<strong>API de base</strong><br />');
                 $('body').append('TimeStamp' + itemId + '<br />');
                 $('body').append('Map Name: ' + map + '<br />');
                 $('body').append('Hours Logged: ' + hours + 'hours<br />');
@@ -112,7 +112,7 @@
                 });
                 
                 
-                $('body').append('<b>Framework Lawnchair</b><br />');
+                $('body').append('<strong>Framework Lawnchair</strong><br />');
                     
                 console.log('get specific object');
                 maps.get('1', function(permalink) {
@@ -157,6 +157,20 @@
                         console.log('number of records after : ' +r.length)
                     });
                 });
+				
+				
+                document.getElementById('submit').addEventListener('click', function(){
+					maps.save({key:"input",value:document.getElementById('text').value});
+					console.log('Valeur : ' +document.getElementById('text').value)
+                });
+				
+				maps.get('input', function(r) {
+                    if (r){
+						$(".valeur").append("<strong>"+r.value+"</strong>");
+					} else {
+						$(".valeur").append("<strong>Pas d'ancienne valeur</strong>");
+					}
+                });
             });
         </script>
     </head>
@@ -165,7 +179,13 @@
 	<h3>Test avec l'API localStorage et avec Lawnchair car à la main c’est vite un peu verbeux… <br/><br/>
 	Lawnchair  permet de basculer sur une implémentation
 ou l’autre (WebStorage (Web Storage === DOM Storage === Local Storage) / IndexedDB / WebSql Database)sans avoir à trop se préoccuper de ce qui est dispo (sauf soucis de taille)</h3>
+<h4>Voir code source + console pour plus d'infos</h4>
 
+
+        <p><input id='text' type="text"><input id='submit' type="button" value="Enregistrer"></p>
+		<div class="valeur">Ancienne valeur :  </div>
+		
+		
         <p><input id='btnLocalStorage' type="button" value="Destroy localStorage with API HTML5"></p>
         <p><input id='btnLawnchair' type="button" value="Destroy with Lawnchair"></p>
     </body>
